@@ -35,8 +35,16 @@ export function CyclesContextProvider({ children }: CyclesContextProviderProps) 
       if (storedStateAsJSON) {
         return JSON.parse(storedStateAsJSON)
       }
+
+      return {
+        cycles: [],
+        activeCycleID: null
+      }
     }
   )
+  
+  const { cycles, activeCycleID } = cyclesState
+  const activeCycle = cycles.find((cycle) => cycle.id === activeCycleID)
   const [amountSecondsPassed, setAmountSecondsPassed] = useState(() => {
     if (activeCycle) {
       return differenceInSeconds(new Date(), new Date(activeCycle.startDate))
@@ -44,16 +52,12 @@ export function CyclesContextProvider({ children }: CyclesContextProviderProps) 
 
     return 0
   })
-  const { cycles, activeCycleID } = cyclesState
 
   useEffect(() => {
     const stateJSON = JSON.stringify(cyclesState)
 
     localStorage.setItem('@pomodoro-timer:cycles-state-1.0.0', stateJSON)
   }, [cyclesState])
-
-
-  const activeCycle = cycles.find((cycle) => cycle.id === activeCycleID)
 
   function setSecondsPassed(seconds: number) {
     setAmountSecondsPassed(seconds)
