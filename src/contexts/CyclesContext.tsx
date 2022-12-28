@@ -58,6 +58,15 @@ export function CyclesContextProvider({ children }: CyclesContextProviderProps) 
 
     localStorage.setItem('@pomodoro-timer:cycles-state-1.0.0', stateJSON)
   }, [cyclesState])
+  useEffect(() => {
+    if ('Notification' in window) {
+      Notification.requestPermission().then((result) => {
+        if (result === 'granted') {
+          localStorage.setItem('@pomodoro-timer:notification', 'granted')
+        }
+      })
+    }
+  }, [])
 
   function setSecondsPassed(seconds: number) {
     setAmountSecondsPassed(seconds)
