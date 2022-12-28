@@ -45,6 +45,13 @@ export function cyclesReducer(state: CyclesState, action: any) {
         return state
       }
 
+      if(localStorage.getItem('@pomodoro-timer:notification') === 'granted') {
+        new Notification('Timer finalizado!', {
+          body: `A task ${state.cycles[currentCycleIndex].task} foi finalizada!`,
+          badge: '../../assets/logo-ignite.svg'
+        })
+      }
+
       return produce(state, (draft) => {
         draft.activeCycleID = null
         draft.cycles[currentCycleIndex].finishedDate = new Date()
